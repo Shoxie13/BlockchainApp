@@ -9,9 +9,12 @@ import Menu from "@mui/material/Menu";
 
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
+import { useNavigate } from "react-router-dom";
+
 import "./NavBar.css";
 
 export default function NavBar(props) {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenu = (event) => {
@@ -28,12 +31,25 @@ export default function NavBar(props) {
     }
   }
 
+  function aboutPage() {
+    navigate("/about", { replace: true });
+  }
+
+  function homePage() {
+    navigate("/home", { replace: true });
+  }
+
+  function contentPage() {
+    navigate("/content", { replace: true });
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar sx={{ backgroundColor: "transparent", boxShadow: "none" }}>
         <Toolbar
           sx={{
             display: "flex",
+            flexDirection: "row",
             justifyContent: "space-around",
             color: "white",
           }}
@@ -46,7 +62,7 @@ export default function NavBar(props) {
               }}
             >
               <Box>
-                <Button href="#Home" className="button-group">
+                <Button onClick={homePage} className="button-group">
                   <div className="main-container">
                     <h2 className="earth effect1 layers" data-text="Home">
                       <span>Home</span>
@@ -55,7 +71,7 @@ export default function NavBar(props) {
                 </Button>
               </Box>
               <Box>
-                <Button href="#" className="button-group">
+                <Button onClick={contentPage} className="button-group">
                   <div className="main-container">
                     <h2 className="earth effect3 layers" data-text="🌍">
                       <span role="img" aria-label="emoji">
@@ -66,7 +82,7 @@ export default function NavBar(props) {
                 </Button>
               </Box>
               <Box>
-                <Button href="#About" className="button-group">
+                <Button onClick={aboutPage} className="button-group">
                   <div className="main-container">
                     <h2 className="earth effect2 layers" data-text="About">
                       <span>About</span>
@@ -79,78 +95,80 @@ export default function NavBar(props) {
 
           <Box
             sx={{
-              "& :hover": {
-                transform: "scale(1.02)",
-                cursor: "pointer",
-              },
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
             }}
           >
-            <div className="main-container">
-              <h2 className="earth effect3 layers" data-text="x">
-                <span role="img" aria-label="emoji">
-                  <Avatar
-                    alt=""
-                    src=""
-                    onClick={handleMenu}
-                    sx={{
-                      width: "20px",
-                      height: "20px",
-                      backgroundColor: "transparent",
-                    }}
-                  >
-                    <AccountBalanceWalletIcon
-                      sx={{ width: "15px", height: "15px" }}
-                    />
-                  </Avatar>
-                  <Menu
-                    id="menu-appbar"
-                    sx={{
-                      "& .MuiList-root": {
-                        paddingTop: "0px",
-                        paddingBottom: "0px",
-                      },
-                      "& .MuiList-root :hover": {
-                        backgroundColor: "#212120",
-                      },
-                    }}
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center",
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "center",
-                    }}
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                  >
-                    <Box
+            <Box
+              sx={{
+                "& :hover": {
+                  transform: "scale(1.02)",
+                  cursor: "pointer",
+                },
+              }}
+            >
+              <div className="main-container">
+                <h2 className="earth effect3 layers" data-text="x">
+                  <span role="img" aria-label="emoji">
+                    <Avatar
+                      alt=""
+                      src=""
+                      onClick={handleMenu}
                       sx={{
-                        display: "flex",
-                        flexDirection: "column",
+                        width: "22px",
+                        height: "22px",
+                        backgroundColor: "transparent",
                       }}
                     >
-                      <Button
-                        href="#walletButton"
-                        onClick={handleClose}
-                        sx={{
-                          color: "white",
-                          backgroundColor: "black",
-                          cursor: "pointer",
-                          fontSize: 12,
-                          textTransform: "none",
-                          border: 2,
-                        }}
-                      >
-                        {props.acc ? textTrunc(props.acc) : "0x0"}
-                      </Button>
-                    </Box>
-                  </Menu>
-                </span>
-              </h2>
-            </div>
+                      <AccountBalanceWalletIcon
+                        sx={{ width: "20px", height: "20px" }}
+                      />
+                    </Avatar>
+                    <Menu
+                      id="menu-appbar"
+                      sx={{
+                        "& .MuiList-root": {
+                          paddingTop: "0px",
+                          paddingBottom: "0px",
+                        },
+                        "& .MuiList-root :hover": {
+                          backgroundColor: "#212120",
+                        },
+                      }}
+                      anchorEl={anchorEl}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center",
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "center",
+                      }}
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      <Box>
+                        <Button
+                          onClick={handleClose}
+                          sx={{
+                            color: "white",
+                            backgroundColor: "black",
+                            cursor: "pointer",
+                            fontSize: 12,
+                            textTransform: "none",
+                            border: 2,
+                          }}
+                        >
+                          {props.acc ? textTrunc(props.acc) : "0x0"}
+                        </Button>
+                      </Box>
+                    </Menu>
+                  </span>
+                </h2>
+              </div>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>

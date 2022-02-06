@@ -7,6 +7,7 @@ import {
   Html,
   useTexture,
 } from "@react-three/drei";
+import * as THREE from "three";
 
 import earth from "./pictures/earth.jpg";
 import bumps from "./pictures/bumps.png";
@@ -24,6 +25,11 @@ function EarthObject() {
     starfield,
   ]);
 
+  earthTx.wrapS = THREE.RepeatWrapping;
+  earthTx.repeat.set(1, 1);
+  bump.wrapS = THREE.RepeatWrapping;
+  bump.repeat.set(1, 1);
+
   useFrame(({ clock }) => {
     earthRef.current.rotation.y = clock.getElapsedTime() / 32;
 
@@ -37,7 +43,7 @@ function EarthObject() {
     <>
       <mesh ref={earthRef}>
         <sphereBufferGeometry attach="geometry" args={[1, 64, 64]} />
-        <meshPhongMaterial
+        <meshPhysicalMaterial
           attach="material"
           map={earthTx}
           bumpMap={bump}
@@ -49,10 +55,10 @@ function EarthObject() {
       </mesh>
       <mesh ref={cloudRef}>
         <sphereBufferGeometry attach="geometry" args={[1.03, 64, 64]} />
-        <meshBasicMaterial attach="material" map={cloud} transparent />
+        <meshPhysicalMaterial attach="material" map={cloud} transparent />
       </mesh>
       <mesh ref={galaxyRef}>
-        <sphereBufferGeometry attach="geometry" args={[90, 64, 64]} />
+        <sphereBufferGeometry attach="geometry" args={[2.5, 64, 64]} />
         <meshBasicMaterial attach="material" map={galaxy} side={1} />
       </mesh>
     </>
@@ -64,19 +70,7 @@ function ObjectLoader() {
 
   return (
     <>
-      <Html
-        center
-        sprite
-        transform
-        distanceFactor={20}
-        position={[5, 15, 0]}
-        style={{
-          background: "palegreen",
-          fontSize: "50px",
-          padding: "10px 18px",
-          border: "2px solid black",
-        }}
-      >
+      <Html center sprite transform distanceFactor={20} position={[5, 15, 0]}>
         {progress}%
       </Html>
     </>
@@ -84,33 +78,20 @@ function ObjectLoader() {
 }
 
 export default function Earth() {
-  try {
-    return (
-      <div>
-        <Canvas
-          style={{
-            height: "100vh",
-            width: "100wh",
-            backgroundColor: "black",
-          }}
-          colorManagement
-          dpr={window.devicePixelRatio}
-          camera={{ position: [0, 0, 1.6], fov: 90 }}
-        >
-          <Suspense fallback={<ObjectLoader />} dpr={[1, 2]}>
-            <directionalLight position={[-2, 1.0, 1.6, 3]} />
-            <EarthObject />
-            <OrbitControls
-              maxDistance={2.5}
-              minDistance={1.3}
-              enablePan={false}
-            />
-          </Suspense>
-        </Canvas>
-        <Loader />
-      </div>
-    );
-  } catch (error) {
-    console.log("The error is: " + Error);
-  }
+  return (
+    <div style={{ height: "100vh", width: "100wh" }}>
+      <Canvas colorManagement camera={{ position: [0, 0, 1.6], fov: 90 }}>
+        <Suspense fallback={<ObjectLoader />}>
+          <directionalLight position={[-2, 1.0, 1.6, 12]} />
+          <EarthObject />
+          <OrbitControls
+            maxDistance={2.5}
+            minDistance={1.3}
+            enablePan={false}
+          />
+        </Suspense>
+      </Canvas>
+      <Loader />
+    </div>
+  );
 }
