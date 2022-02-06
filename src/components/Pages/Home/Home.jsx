@@ -34,10 +34,10 @@ export default function Home() {
             </span>
           </Typography>
           <Box container xs={0}>
-            <Typography variant="subtitle1">
+            <Typography variant="h6">
               Your universe is about the change!
             </Typography>
-            <Typography variant="subtitle1">
+            <Typography variant="h6">
               Step-in our world and prepare yourself <br /> for the ultimate
               adventure.
             </Typography>
